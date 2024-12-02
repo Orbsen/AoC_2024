@@ -6,6 +6,12 @@ $functions = new Functions();
 
 $inputRows = file('input02');
 
-$safeReports = $functions->getSafeReports($inputRows);
+$unSafeReports = $functions->getUnsafeReports($inputRows);
 
-echo 'result of Day02-01: ' . count($safeReports);
+$countSafeReports = count($inputRows) - count($unSafeReports);
+
+echo 'result of Day02-01: ' . $countSafeReports . '<br>';
+
+$reviewedSafeReports = $functions->calculateWithDampener($unSafeReports);
+
+echo 'result of Day02-02: ' . count($reviewedSafeReports) + $countSafeReports . '<br>';

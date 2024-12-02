@@ -10,16 +10,35 @@ class functions
      * @param string[] $inputRows
      * @return string[]
      */
-    public function getSafeReports(array $inputRows): array
+    public function getUnsafeReports(array $inputRows): array
     {
         $result = [];
 
         foreach ($inputRows as $row) {
             $numbers = explode(' ', $row);
 
-            if ($this->calculateSafety($numbers)) {
+            if (!$this->calculateSafety($numbers)) {
                 $result[] = $row;
             }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param string[] $inputRows
+     * @return string[]
+     */
+    public function calculateWithDampener(array $inputRows): array
+    {
+        $result = [];
+
+        foreach ($inputRows as $row) {
+            $numbers = explode(' ', $row);
+
+            if ($this->checkWithDampener($numbers)) {
+                $result[] = $row;
+            };
         }
 
         return $result;
@@ -58,5 +77,23 @@ class functions
             }
         }
         return true;
+    }
+
+    /**
+     * @param string[] $numbers
+     * @return int
+     */
+    protected function checkWithDampener(array $numbers): bool
+    {
+        foreach ($numbers as $key => $number) {
+            $copiedNumbers = $numbers;
+
+            unset($copiedNumbers[$key]);
+
+            if ($this->calculateSafety(array_values($copiedNumbers))) {
+                return true;
+            }
+        }
+        return false;
     }
 }
