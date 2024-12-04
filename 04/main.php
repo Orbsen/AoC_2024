@@ -11,3 +11,8 @@ $parsedInput = $functions->parseInput($inputRows);
 $countOfSearchedWord = $functions->findWord('XMAS', $parsedInput);
 
 echo ' result of Day04-01: ' . $countOfSearchedWord;
+echo '<br>';
+
+$countOfXWord = $functions->findXWord('MAS', $parsedInput);
+
+echo ' result of Day04-02: ' . $countOfXWord;

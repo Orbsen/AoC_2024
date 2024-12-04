@@ -233,4 +233,58 @@ class Functions
         }
         return true;
     }
+
+    public function findXWord(string $word, array $input): int
+    {
+        $maxRowCount = count($input) - 1;
+
+        $keyWord = str_split($word);
+        $startingChar = $keyWord[1];
+
+        $resultCount = 0;
+
+        foreach ($input as $keyRow => $inputRow) {
+            $rowLength = count($inputRow) - 1;
+            $isUpClear = $keyRow >= 1;
+            $isDownClear = $keyRow <= $maxRowCount - 1;
+
+            foreach ($inputRow as $keyChar => $char) {
+                if ($char !== $startingChar) {
+                    continue;
+                }
+
+                $isLeftClear = $keyChar >= 1;
+                $isRightClear = $keyChar <= $rowLength - 1;
+
+                if ($isUpClear && $isLeftClear && $isRightClear && $isDownClear && $this->getXWordCount($keyRow, $keyChar, $input)) {
+                    $resultCount ++;
+                }
+            }
+        }
+        return $resultCount;
+    }
+
+    protected function getXWordCount(int $yCord, int $xCord, array $input): bool
+    {
+        $possibleCombinations = [
+            'MMSS',
+            'MSMS',
+            'SSMM',
+            'SMSM'
+        ];
+
+        foreach ($possibleCombinations as $combination) {
+            $combinationArray = str_split($combination);
+
+            if (
+                $input[$yCord - 1][$xCord - 1] === $combinationArray[0]
+                && $input[$yCord - 1][$xCord + 1] === $combinationArray[1]
+                && $input[$yCord + 1][$xCord - 1] === $combinationArray[2]
+                && $input[$yCord + 1][$xCord + 1] === $combinationArray[3]
+            ) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
